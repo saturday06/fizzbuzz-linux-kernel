@@ -16,6 +16,12 @@ config FIZZBUZZ_EMULATION
 	---help---
 	  fizzbuzz machine code wo emulation suru !
 
+config BINFMT_FIZZBUZZ
+	bool "Support for Fizzbuzz ececutables"
+	select FIZZBUZZ
+	---help---
+	  fizzbuzz executable wo support suru !
+
 endmenu
 
 config SRCARCH
