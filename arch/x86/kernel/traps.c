@@ -175,6 +175,33 @@ vm86_trap:
 #endif
 }
 
+#ifdef CONFIG_FIZZBUZZ_EMULATION
+extern int fizzbuzz(void);
+dotraplinkage void do_invalid_op_after_fizzbuzz_check(struct pt_regs *regs, long error_code);
+dotraplinkage void do_invalid_op(struct pt_regs *regs, long error_code)
+{
+	const u8 fizzbuzz_inst = 0xd6;
+	u8 inst;
+
+	if (copy_from_user(&inst, (void*)regs->ip, sizeof(inst)) > 0) {
+		printk("do_invalid_op: inst=[read error]\n");
+		do_invalid_op_after_fizzbuzz_check(regs, error_code);
+		return;
+	} else if (inst != fizzbuzz_inst) {
+		printk("do_invalid_op: inst=0x%x\n", (unsigned int)inst);
+		do_invalid_op_after_fizzbuzz_check(regs, error_code);
+		return;
+	}
+
+	if (fizzbuzz() < 0) {
+		do_invalid_op_after_fizzbuzz_check(regs, error_code);
+	} else {
+		regs->ip += sizeof(inst);
+	}
+}
+#define do_invalid_op(regs, error_code) do_invalid_op_after_fizzbuzz_check(regs, error_code)
+#endif
+
 #define DO_ERROR(trapnr, signr, str, name)				\
 dotraplinkage void do_##name(struct pt_regs *regs, long error_code)	\
 {									\

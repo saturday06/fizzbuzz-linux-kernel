@@ -4,6 +4,20 @@
 #
 mainmenu "Linux/$ARCH $KERNELVERSION Kernel Configuration"
 
+menu "FizzBuzz"
+
+config FIZZBUZZ
+	bool
+	default n
+
+config FIZZBUZZ_EMULATION
+	bool "Enable FizzBuzz machine code emulation"
+	select FIZZBUZZ
+	---help---
+	  fizzbuzz machine code wo emulation suru !
+
+endmenu
+
 config SRCARCH
 	string
 	option env="SRCARCH"
