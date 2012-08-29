@@ -17,7 +17,7 @@ config FIZZBUZZ_EMULATION
 	  fizzbuzz machine code wo emulation suru !
 
 config BINFMT_FIZZBUZZ
-	bool "Support for Fizzbuzz ececutables"
+	bool "Support for FizzBuzz executables"
 	select FIZZBUZZ
 	---help---
 	  fizzbuzz executable wo support suru !
